@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../static/css/main_style.css"/>
+    <title>电力信息</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="navbar">
+        <a href="/">
+            <img src="../static/images/lighting.png" class="logo"/>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/">HOME</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1>电力信息展示系统</h1>
+            <p>
+                欢迎来到电力信息展示系统，在这里您可以查看上传文件后的风力和光伏发电功率信息、区域负荷信息以及电价信息
+            </p>
+            <a href="/WindAndSolar">
+                <button type="button" class="button">开始</button>
+            </a>
+        </div>
+        <div class="cardCol">
+            <a class="card-link" href="/WindAndSolar">
+                <div class="card1 card">
+                    <h5 class="custom-font-size">风力和光伏发电功率信息模块</h5>
+                    <p>此模块展示关于风力、光伏发电功率的历史及预测数据等相关可视化信息</p>
+                </div>
+            </a>
+            <a class="card-link" href="/electric_ui">
+                <div class="card2 card">
+                    <h5>电力负荷及电价信息模块</h5>
+                    <p>此模块展示电力负荷情况以及电价的历史及预测数据等相关可视化信息</p>
+                </div>
+            </a>
+            <a class="card-link" href="/worldInfo">
+                <div class="card3 card">
+                    <h5>相关数据信息概览</h5>
+                    <p>此模块将简要介绍本项目所使用到的相关地区数据信息特点等可视化信息</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

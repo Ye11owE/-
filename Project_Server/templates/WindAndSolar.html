@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>风力和光伏发电模块</title>
+    <link rel="stylesheet" href="../static/css/index.css"/>
+    <!-- 引入日期选择 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- 引入Bootstrap CSS，用于样式化提示框 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+<!-- 头部的盒子 -->
+<header>
+    <h1>风力和光伏发电模块</h1>
+    <div class="showTime"></div>
+    <script>
+        var t = null;
+        t = setTimeout(time, 1000);//開始运行
+        function time() {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y = dt.getFullYear();
+            var mt = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var h = dt.getHours();//获取时
+            var m = dt.getMinutes();//获取分
+            var s = dt.getSeconds();//获取秒
+            document.querySelector(".showTime").innerHTML = '当前时间：' + y + "年" + mt + "月" + day + "日-" + h + "时" + m + "分" + s + "秒";
+            t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+    </script>
+</header>
+<!-- 页面主体部分 -->
+<section class="mainbox">
+    <div class="column">
+        <div class="panel wind_level_bar">
+            <h2>历史风力等级分布</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel wind_daily_line">
+            <h2>历史月均风力等级</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel wind_year_rose">
+            <h2>历史风力发电功率</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="form-container">
+            <form id="trainForm" method="post" enctype="multipart/form-data" action="/trainWindAndSolar">
+                <!--                    <div class="file-upload-container">-->
+                <!--                        <label for="file_prediction_train">请上传训练数据</label>-->
+                <!--                        <input type="file" id="file_prediction_train" name="excel_file_prediction_train">-->
+                <!--                        <label for="file_prediction_pred">请上传天气数据</label>-->
+                <!--                        <input type="file" id="file_prediction_pred" name="excel_file_prediction_pred">-->
+                <!--                    </div>-->
+                <div class="date-container">
+                    <label for="start_date">开始日期：</label>
+                    <input type="text" id="start_date" name="start_date" required>
+                    <label for="end_date">结束日期：</label>
+                    <input type="text" id="end_date" name="end_date" required>
+                </div>
+                <div class="date-container">
+                </div>
+                <button type="submit">开始预测</button>
+            </form>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                flatpickr("#start_date", {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    minuteIncrement: 30,
+                    time_24hr: true
+                });
+
+                flatpickr("#end_date", {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    minuteIncrement: 30,
+                    time_24hr: true
+                });
+            });
+        </script>
+
+        <div class="panel_prediction wind_Prediction_line">
+            <h2>风力发电功率预测</h2>
+            <div style="font-size: larger; text-align: center; color: #f3f1f1; margin-top: 2rem;">请选择要预测的时间段</div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel_prediction solar_Prediction_line">
+            <h2>光伏发电功率预测</h2>
+            <div style="font-size: larger; text-align: center; color: #f3f1f1; margin-top: 2rem;">请选择要预测的时间段</div>
+            <div class="panel-footer"></div>
+        </div>
+        <div style="text-align: center;">
+            <button class="return-button" onclick="location.href='/';">返回主界面</button>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="panel solar_dailysum_bar">
+            <h2>历史月度总太阳辐射</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel solar_daily_line">
+            <h2>历史月均气温</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel solar_year_rose">
+            <h2>历史光伏发电功率</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+    </div>
+</section>
+<script src="../static/js/flexible.js"></script>
+<script src="../static/js/echarts.min.js"></script>
+<script src="../static/js/index01.js"></script>
+</body>
+
+</html>

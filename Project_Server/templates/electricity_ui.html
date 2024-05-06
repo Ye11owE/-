@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>电力负荷及电价信息模块</title>
+    <link rel="stylesheet" href="../static/css/index02.css"/>
+    <!-- 引入日期选择 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- 引入Bootstrap CSS，用于样式化提示框 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+<!-- 头部的盒子 -->
+<header>
+    <h1>电价负荷及电价信息模块</h1>
+    <div class="showTime"></div>
+    <script>
+        var t = null;
+        t = setTimeout(time, 1000);//開始运行
+        function time() {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y = dt.getFullYear();
+            var mt = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var h = dt.getHours();//获取时
+            var m = dt.getMinutes();//获取分
+            var s = dt.getSeconds();//获取秒
+            document.querySelector(".showTime").innerHTML = '当前时间：' + y + "年" + mt + "月" + day + "日-" + h + "时" + m + "分" + s + "秒";
+            t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+    </script>
+</header>
+<!-- 页面主体部分 -->
+<section class="mainbox">
+    <div class="column">
+        <div class="panel MonAvgPrice_line">
+            <h2>每月平均电价/负荷</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel MonSumElec_radar">
+            <h2>各月份负荷与风力发电占比</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="form-container">
+            <form id="trainForm" method="post" enctype="multipart/form-data" action="/trainElectric">
+                <!--                    <div class="file-upload-container">-->
+                <!--                        <label for="file_prediction_train">请上传训练数据</label>-->
+                <!--                        <input type="file" id="file_prediction_train" name="excel_file_prediction_train">-->
+                <!--                        <label for="file_prediction_pred">请上传天气数据</label>-->
+                <!--                        <input type="file" id="file_prediction_pred" name="excel_file_prediction_pred">-->
+                <!--                    </div>-->
+                <div class="date-container">
+                    <label for="start_date">开始日期：</label>
+                    <input type="text" id="start_date" name="start_date" required>
+                    <label for="end_date">结束日期：</label>
+                    <input type="text" id="end_date" name="end_date" required>
+                </div>
+                <button type="submit">开始预测</button>
+            </form>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                flatpickr("#start_date", {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    minuteIncrement: 30,
+                    time_24hr: true
+                });
+
+                flatpickr("#end_date", {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    minuteIncrement: 30,
+                    time_24hr: true
+                });
+            });
+        </script>
+        <div class="panel_prediction electricity_prediction_line">
+            <h2>用电负荷预测</h2>
+            <div style="font-size: larger; text-align: center; color: #f3f1f1; margin-top: 2rem;">请选择要预测的时间段</div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel_prediction price_prediction_line">
+            <h2>电价预测</h2>
+            <div style="font-size: larger; text-align: center; color: #f3f1f1; margin-top: 2rem;">请选择要预测的时间段</div>
+            <div class="panel-footer"></div>
+        </div>
+        <div style="text-align: center;">
+            <button class="return-button" onclick="location.href='/';">返回主界面</button>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="panel monAvg_paral">
+            <h2>区域用电特征</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+        <div class="panel historyPrice">
+            <h2>历史电价总览</h2>
+            <div class="chart"></div>
+            <div class="panel-footer"></div>
+        </div>
+
+    </div>
+</section>
+<script>
+    var data = {{ data_series | safe }};
+</script>
+<script src="../static/js/flexible.js"></script>
+<script src="../static/js/echarts.min.js"></script>
+<script src="../static/js/index02.js"></script>
+<script src="../static/js/xlsx.full.min.js"></script>
+</body>
+
+</html>

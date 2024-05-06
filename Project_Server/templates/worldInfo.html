@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>相关数据信息概览</title>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        #content {
+            position: relative;
+            z-index: 10;
+            height: 800vh; /* 确保有足够的高度产生滚动效果 */
+            overflow: auto; /* 允许内容区滚动 */
+            color: white; /* 设置内容文字颜色为白色 */
+            
+        }
+        .slide {
+        background-size: cover;
+        background-attachment: fixed; /* 视差效果 */
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        position: relative;
+        background-color: rgba(0,0,0,0.5); /* 灰色幕布背景 */
+    }
+    .text-block {
+        
+        position: absolute;
+        top: 20%;
+        left: 10%; /* 调整为距离左侧10%的位置 */
+        text-align: left;
+        color: white;
+        max-width: 20%; /* 设置最大宽度为屏幕宽度的20%，这个值可以根据实际需要调整 */
+        overflow: hidden; /* 防止内容溢出 */
+    }
+    .chart {
+        position: absolute;
+        bottom: 10%;
+        width: 80%;
+        height: 30%;
+    }
+    .return-button {
+            padding: 8px 13px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+            text-align: center;
+            border: none; /* 去除默认边框 */
+            outline: none; /* 去除点击时的轮廓 */
+            transition: background-color 0.3s ease; /* 平滑背景颜色变化 */
+    }
+    .return-button:hover {
+        background-color: #0056b3;
+    }
+
+    </style>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="../static/js/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="content">
+        <!-- 这里可以添加更多的网页内容 -->
+        <h1 style="margin-top: 80vh; text-align: center;">开始探索</h1>
+
+        <div style="height: 90vh;"></div>
+
+
+        <!-- 幻灯片 1：比利时的电价情况 -->
+        <div class="slide">
+            <div class="text-block">
+                <h1>在俄乌战争和能源危机的双重影响下，比利时电网负荷显著下降，政府可能采取紧急节能措施应对。</h1>
+            </div>
+            <div class="chart" id="mainChart-1"></div>
+        </div>
+        <!-- 空白间隔，高度为100视窗高度 -->
+        <div style="height: 150vh;"></div>
+
+        <!-- 幻灯片 2：另一个主题 -->
+        <div class="slide">
+           <div class="text-block">
+              <h1>波兰政府实施的新法律，大幅减免电力消费税和过渡费用，不仅稳定了2019年电价，还有助于未来几年电价的长期稳定</h1>
+             </div>
+       <div class="chart" id="mainChart-2"></div>
+</div>
+
+<div style="height: 150vh;"></div>
+<!-- 幻灯片 3：比利时的电价情况 -->
+<div class="slide">
+    <div class="text-block">
+        <h1>在新冠疫情影响下，巴拿马区域用电需求显著下降。</h1>
+    </div>
+    <div class="chart" id="mainChart-3"></div>
+
+    <div style="text-align: center;">
+        <button class="return-button" onclick="location.href='/';">返回主界面</button>
+    </div>
+</div>
+
+
+
+    </div>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Cesium.js"></script>
+    <script>
+
+        function loadBelgiumBorders() {
+    // 指定 GeoJSON 文件的路径
+    var belgiumBordersUrl = '../static/WORLD/countries/BEL.geo.json';
+    // 加载 GeoJSON 数据
+    viewer.dataSources.add(Cesium.GeoJsonDataSource.load(belgiumBordersUrl, {
+        stroke: Cesium.Color.YELLOW, // 国界线颜色
+        fill: Cesium.Color.YELLOW.withAlpha(0.5), // 国界内部填充颜色
+        strokeWidth: 2, // 国界线宽度
+        clampToGround: true // 确保数据贴合地面
+    })).then(function (dataSource) {
+        // 调整视角到加载的GeoJson区域
+        viewer.flyTo(dataSource);
+    }).catch(function (error) {
+        console.error('Error loading GeoJSON: ', error);
+    });
+}
+
+function loadPANBorders() {
+    // 指定 GeoJSON 文件的路径
+    var belgiumBordersUrl = '../static/WORLD/countries/PAN.geo.json';
+    // 加载 GeoJSON 数据
+    viewer.dataSources.add(Cesium.GeoJsonDataSource.load(belgiumBordersUrl, {
+        stroke: Cesium.Color.BLUE, // 国界线颜色
+        fill: Cesium.Color.BLUE.withAlpha(0.5), // 国界内部填充颜色
+        strokeWidth: 2, // 国界线宽度
+        clampToGround: true // 确保数据贴合地面
+    })).then(function (dataSource) {
+        // 调整视角到加载的GeoJson区域
+        viewer.flyTo(dataSource);
+    }).catch(function (error) {
+        console.error('Error loading GeoJSON: ', error);
+    });
+}
+
+function loadPOLBorders() {
+    // 指定 GeoJSON 文件的路径
+    var belgiumBordersUrl = '../static/WORLD/countries/POL.geo.json';
+    // 加载 GeoJSON 数据
+    viewer.dataSources.add(Cesium.GeoJsonDataSource.load(belgiumBordersUrl, {
+        stroke: Cesium.Color.RED, // 国界线颜色
+        fill: Cesium.Color.RED.withAlpha(0.5), // 国界内部填充颜色
+        strokeWidth: 2, // 国界线宽度
+        clampToGround: true // 确保数据贴合地面
+    })).then(function (dataSource) {
+        // 调整视角到加载的GeoJson区域
+        viewer.flyTo(dataSource);
+    }).catch(function (error) {
+        console.error('Error loading GeoJSON: ', error);
+    });
+}
+
+
+        var viewer;
+
+        window.addEventListener('DOMContentLoaded', function () {
+            Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwOTkwNThhZS1iNjQ5LTQxNWEtOTU4Zi1mNDk5MzQ5MzgyNTgiLCJpZCI6MjEwODM1LCJpYXQiOjE3MTM5MzEwODJ9.x2-5BF3akhNsVpLiPmFblNvJtxGLdSy15bXd8SOMds0';
+            
+            viewer = new Cesium.Viewer('cesiumContainer', {
+                terrainProvider: Cesium.createWorldTerrain(),
+                sceneMode: Cesium.SceneMode.SCENE3D,
+                animation: false,
+                timeline: false,
+                navigationHelpButton: false,
+            });
+
+            viewer.scene.screenSpaceCameraController.enableZoom = false;   
+        });
+
+
+
+        window.addEventListener('scroll', function () {
+    let scrollPosition = window.scrollY || window.pageYOffset;
+    let contentHeight = document.getElementById('content').getBoundingClientRect().height;
+    // 计算滚动位置的百分比
+    let scrollPercentage = scrollPosition / contentHeight;
+
+    // 当滚动到页面的1/3
+    if (scrollPercentage >= 1/9 && scrollPercentage < 1/4) {
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(4.4699, 50.5039, 1000000), // 比利时的经纬度和高度
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-90),
+                roll: 0
+            },
+            duration: 2,  // 飞行到指定位置的时间（秒）
+            complete: function () {
+            // 飞行完成后加载比利时的国界
+            loadBelgiumBorders();
+        }
+
+        });
+    }
+    // 当滚动到页面的1/2
+    else if (scrollPercentage >= 1/4 && scrollPercentage < 0.5) {
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(19.134422, 51.919438, 1000000), // 波兰的经纬度和高度
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-90),
+                roll: 0
+            },
+            duration: 2, // 飞行到指定位置的时间（秒）
+            complete: function () {
+            // 飞行完成后加载比利时的国界
+            loadPOLBorders();
+        }
+         
+        });
+    }
+    // 当滚动到页面的65%
+    else if (scrollPercentage >= 0.6) {
+        viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(-80.7821, 8.537981, 1000000), // 巴拿马的经纬度和高度
+            orientation: {
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(-90),
+                roll: 0
+            },
+            duration: 2,  // 飞行到指定位置的时间（秒）
+            complete: function () {
+            loadPANBorders();
+        }
+        });
+    }
+});
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.xlsx';
+            fileInput.addEventListener('change', function(event) {
+                var file = event.target.files[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function(event) {
+                    var data = event.target.result;
+                    processDataAndDrawChart(data);
+                };
+                fileReader.readAsBinaryString(file);
+            });
+            document.body.appendChild(fileInput);
+        });
+
+
+
+        // 使用异步函数获取 Excel 数据
+        async function fetchBELData() {
+            // 发送 GET 请求获取 Excel 文件数据(服务器上需修改为公网ip)
+            const response = await fetch('http://127.0.0.1:5000/fetchBELData');
+            // 将 Excel 文件转换为二进制数据
+            const blobData = await response.blob();
+            // 使用 File API 将二进制数据转换为文件对象
+            const file = new File([blobData], 'BEL.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            // 使用 XLSX.js 解析 Excel 文件
+            const reader = new FileReader();
+            reader.readAsBinaryString(file);
+
+            return new Promise((resolve, reject) => {
+                reader.onload = (event) => {
+                    const data = event.target.result;
+                    const workbook = XLSX.read(data, { type: 'binary' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                    resolve(jsonData);
+                };
+
+                reader.onerror = (error) => {
+                    reject(error);
+                };
+            });
+        }
+
+        // 绘制折线图
+        async function drawChart() {
+            // 获取 Excel 数据
+            const data = await fetchBELData();
+
+            // 初始化 ECharts 实例
+            const myChart = echarts.init(document.getElementById('mainChart-1'));
+
+            // 定义 Y 轴数据为日期
+            // 生成12月1日到30日的日期
+            const dates = [];
+            for (let i = 1; i <= 30; i++) {
+                dates.push(`12月${i}日`);
+            }
+
+            // 初始化数据列表
+            const seriesData = [];
+
+            // 遍历每一年的数据
+            for (let i = 1; i < data[0].length; i++) {
+                const yearData = data.slice(1).map(row => row[i]); // 当前年份的数据，从第二列开始
+
+                // 添加当前年份的数据到 seriesData 中
+                seriesData.push({
+                    name: data[0][i], // 设置折线的名称为年份
+                    type: 'line', // 指定折线图类型
+                    data: yearData // 设置折线的数据为当前年份的电网负荷数据
+                });
+            }
+
+            // 定义图表配置项
+            const option = {
+                title: {
+                    text: '比利时电网负荷图',
+                    textStyle: {
+            color: '#FFFFFF' // 设置标题文字为白色
+        }
+
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: data[0].slice(1) // 设置图例的数据为除第一列外的所有列名（年份）
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates // 设置 X 轴的数据为日期
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 5000, // 设置 Y 轴的最小值
+                    max: 11000 // 设置 Y 轴的最大值
+                },
+                series: seriesData // 设置折线图的数据为每年对应的电网负荷数据
+            };
+
+            // 使用配置项设置图表
+            myChart.setOption(option);
+        }
+
+        // 调用绘制图表的函数
+        drawChart();
+
+
+
+// 使用异步函数获取 POL.xlsx 文件的数据
+async function fetchPolData() {
+    // 修改这里的 URL 以匹配您的 Flask 应用中设置的路由
+    const response = await fetch('http://127.0.0.1:5000/fetchPolData');
+    if (response.ok) {
+        const blobData = await response.blob();
+        const file = new File([blobData], 'POL.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        const reader = new FileReader();
+        reader.readAsBinaryString(file);
+
+        return new Promise((resolve, reject) => {
+            reader.onload = (event) => {
+                const data = event.target.result;
+                const workbook = XLSX.read(data, {
+                    type: 'binary',
+                    cellDates: true,
+                    dateNF: 'yyyy-mm-dd hh:mm:ss' // 指定日期格式
+                });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(sheet, {
+                    header: 1,
+                    raw: false, // 告诉工具不返回原始的序列数值
+                    dateNF: 'yyyy-mm-dd hh:mm:ss' // 在转换为JSON时也应用日期格式
+                });
+                resolve(jsonData);
+            };
+            reader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    } else {
+        // 如果服务器响应不是 ok，这里可以处理错误情况
+        console.error('无法获取数据: ', response.status);
+        throw new Error('Network response was not ok.');
+    }
+}
+
+// 绘制 POL.xlsx 数据的折线图
+async function drawPolChart() {
+    const data = await fetchPolData();
+    const myChart = echarts.init(document.getElementById('mainChart-2'));
+
+    const dates = data.map(row => row[0]); // 第一列数据为日期
+    const prices = data.map(row => row[1]); // 第二列数据为电价
+
+    const option = {
+        title: {
+            text: '波兰电价变化图',
+            textStyle: {
+                color: '#FFFFFF'  // 设置标题文字为白色
+            }
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: {
+            type: 'category',
+            data: dates
+        },
+        yAxis: {
+            type: 'value',
+            name: '电价 (兹罗提/MWh)'
+        },
+        series: [{
+            data: prices,
+            type: 'line',
+            smooth: true,
+            markLine: {
+                symbol:'none',
+                data: [
+                     // 这将移除标记线末端的箭头符号
+                    { type: 'average', name: '平均值' },
+                    { 
+                    xAxis: '2018-12-31 00:00:00', // 指定的 x 轴数据点
+                    lineStyle: {
+                        type: 'dashed', // 虚线类型
+                        color: 'red' // 线条颜色
+                    },
+                    label: {
+                        position: 'end', // 标签位置
+                        formatter: '电价法案签署' // 标签文本
+                    }}
+                ]
+            }
+        }]
+    };
+
+    myChart.setOption(option);
+}
+
+// 调用绘制波兰电价图表的函数
+drawPolChart();
+
+
+// 使用异步函数获取 PAN.xlsx 文件的数据
+async function fetchPanData() {
+    const response = await fetch('http://127.0.0.1:5000/fetchPANData');
+    const blobData = await response.blob();
+    const file = new File([blobData], 'PAN.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+   // 使用 XLSX.js 解析 Excel 文件
+const reader = new FileReader();
+reader.readAsBinaryString(file);
+
+return new Promise((resolve, reject) => {
+    reader.onload = (event) => {
+        const data = event.target.result;
+        const workbook = XLSX.read(data, {
+            type: 'binary',
+            cellDates: true, // 解析为日期对象
+            dateNF: 'yyyy/mm/dd hh:mm' // 设置日期格式
+        });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        // XLSX.utils.sheet_to_json 会将日期对象转换为指定格式的字符串
+        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false });
+        resolve(jsonData);
+    };
+    reader.onerror = (error) => {
+        reject(error);
+    };
+});
+}
+
+// 绘制 PAN.xlsx 数据的折线图
+async function drawPanChart() {
+    const rawData = await fetchPanData();
+    const myChart = echarts.init(document.getElementById('mainChart-3'));
+
+    // 截取从第二行开始的数据（第一行是标题）
+    const data = rawData.slice(1);
+
+    const dates = data.map(row => row[0]); // 时间数据
+    const loads = data.map(row => row[1]); // 电力负荷数据
+
+    const option = {
+        title: {
+            text: '电力负荷变化图',
+            textStyle: {
+                color: '#FFFFFF'  // 设置标题文字为白色
+            }
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: {
+            type: 'category',
+            data: dates,
+            axisLabel: {
+                rotate: 45 // 如果日期标签太长，可以选择旋转以便于阅读
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '电力负荷 (兆瓦)',
+            min: 700, // 设置 Y 轴的最小值
+            max: 1800 // 设置 Y 轴的最大值
+        },
+        series: [{
+            data: loads,
+            type: 'line',
+            smooth: true,
+            markLine: {
+                symbol: 'none', // 这将移除标记线末端的箭头符号
+                data: [
+                    { type: 'average', name: '平均值' },
+                    { 
+                    xAxis: '3/22/20 1:00', // 指定的 x 轴数据点
+                    lineStyle: {
+                        type: 'dashed', // 虚线类型
+                        color: 'red' // 线条颜色
+                    },
+                    label: {
+                        position: 'end', // 标签位置
+                        formatter: '新冠疫情爆发' // 标签文本
+                    }}
+                ]
+            }
+        }]
+    };
+
+    myChart.setOption(option);
+}
+
+// 调用绘制电力负荷图表的函数
+drawPanChart();
+
+
+        
+    </script>
+</body>
+</html>

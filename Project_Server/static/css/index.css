@@ -1,0 +1,274 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: url(../images/bg.jpg) no-repeat top center;
+  line-height: 1.15;
+  background-size: cover;
+}
+header {
+  position: relative;
+  height: 1.25rem;
+  background: url(../images/head_bg.png) no-repeat;
+  background-size: 100% 100%;
+}
+header h1 {
+  font-size: 0.475rem;
+  color: #fff;
+  text-align: center;
+  line-height: 1rem;
+}
+header .showTime {
+  position: absolute;
+  top: 0;
+  right: 0.375rem;
+  line-height: 0.9375rem;
+  font-size: 0.25rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.mainbox {
+  display: flex;
+  min-width: 1024px;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0.125rem 0.125rem 0;
+}
+.mainbox .column {
+  flex: 3;
+}
+.mainbox .column:nth-child(2) {
+  flex: 5;
+  margin: 0 0.125rem 0.1875rem;
+  overflow: hidden;
+}
+.mainbox .panel {
+  position: relative;
+  height: 3.875rem;
+  padding: 0 0.1875rem 0.5rem;
+  border: 1px solid rgba(25, 186, 139, 0.17);
+  margin-bottom: 0.1875rem;
+  background: url(../images/lines.png) rgba(255, 255, 255, 0.03);
+}
+.mainbox .panel::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel .panel-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.mainbox .panel .panel-footer::before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel .panel-footer::after {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel h2 {
+  height: 0.2rem;
+  color: #fff;
+  line-height: 0.6rem;
+  text-align: center;
+  font-size: 0.25rem;
+  font-weight: 400;
+}
+.mainbox .panel h2 a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 0.125rem;
+}
+.mainbox .panel .chart {
+  height: 3rem;
+}
+
+/* 预测部分 */
+.mainbox .panel_prediction {
+  position: relative;
+  height: 5rem;
+  padding: 0 0.18rem 0.1rem;
+  border: 1px solid rgba(25, 186, 139, 0.17);
+  margin-bottom: 0.1rem;
+  background: url(../images/lines.png) rgba(255, 255, 255, 0.03);
+}
+.mainbox .panel_prediction::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel_prediction::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel_prediction .panel-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.mainbox .panel_prediction .panel-footer::before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel_prediction .panel-footer::after {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel_prediction h2 {
+  height: 0.2rem;
+  color: #fff;
+  line-height: 0.6rem;
+  text-align: center;
+  font-size: 0.25rem;
+  font-weight: 400;
+}
+.mainbox .panel_prediction h2 a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 0.125rem;
+}
+.mainbox .panel_prediction .chart {
+  height: 3.5rem;
+}
+
+/* 设置预测表单容器的样式 */
+.form-container {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* 设置表单内部元素的样式 */
+.form-container label {
+  display: block;
+  margin: 5px 2px;
+  width: 2rem;
+  color: #f8f5f5;
+}
+
+.form-container input[type="text"],
+.form-container input[type="file"] {
+  width: 2.5rem;
+  padding: 2px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.form-container button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 4.5rem;
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+.file-upload-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.file-upload-container label {
+    display: block;
+    margin-bottom: 1px;
+    width: 2rem;
+    color: #f8f5f5;
+}
+
+.file-upload-container input[type="file"] {
+    width: 3.5rem;
+    padding: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.date-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.date-container div {
+  flex: 2;
+  margin-right: 10px; /* 添加间距 */
+}
+
+.date-container input[type="text"]{
+    margin-right:1rem;
+}
+
+.return-button {
+  padding: 8px 13px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.return-button:hover {
+  background-color: #0056b3;
+}

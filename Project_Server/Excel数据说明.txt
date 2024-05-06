@@ -1,0 +1,4 @@
+data.xlsx是电价预测所需的数据
+WindAndSolar_history.xlsx以及WindAndSolar_pred_weather.xlsx是风力和光伏发电预测所需的数据
+train_data.xlsx是给用户负荷预测所需的数据
+BEL.xlsx PAN.xlsx POL.xlsx是信息概要展示所需的数据
